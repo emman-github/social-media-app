@@ -1,0 +1,7 @@
+{
+  "name": "logmaster",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
