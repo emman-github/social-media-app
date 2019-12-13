@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { FilterContributorReviewsComponent } from 'src/app/layout/filter-contributor-reviews/filter-contributor-reviews.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -19,10 +19,13 @@ export class ContributorReviewsPage implements OnInit {
   likes: boolean;
   heartByYou: boolean;
 
+  oneDay: any;
+  loading: any;
 
   constructor(
     private modalController: ModalController,
-    private httpClient: HttpClient  
+    private httpClient: HttpClient,
+    private loadingController: LoadingController  
   ) {
     this.reviews = [
       {
@@ -43,6 +46,8 @@ export class ContributorReviewsPage implements OnInit {
       'likes': 0,
       'heartByYou': false 
     }
+
+    this.oneDay = 60 * 60 * 24 * 1000;
   }
 
   ngOnInit() {
@@ -88,7 +93,7 @@ export class ContributorReviewsPage implements OnInit {
       }
   
       this.httpClient.get('http://staging-api.allchops.com/api/user/d508db76-3c46-4eb4-88e8-a084c281d2ee/reviews', httpOptions).subscribe((data: any) => { 
-        console.log(JSON.stringify(data));
+        console.log(data);
         this.reviews = data;
         resolve(data);
       });
@@ -102,17 +107,53 @@ export class ContributorReviewsPage implements OnInit {
   }
 
   addReview() { 
-    const review = {
-      'name': this.name,
-      'start': 5,
-      'text': 'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.',
-      'date': '1/19/19',
-      'likes': '100',
-      'heartByYou': true
-    }     
+    this.presentLoading();
+    // const review = {
+    //   'name': this.name,
+    //   'start': 5,
+    //   'text': 'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.',
+    //   'date': '1/19/19',
+    //   'likes': '100',
+    //   'heartByYou': true
+    // }     
+
+//     {
+// "postId": null,
+//   "reviewerId": "92cf5e3c-91b4-4e15-8531-a3c2dcea2084",
+//   "stars": 5,
+//   "text": "A Sample text",
+//   "userId": "d508db76-3c46-4eb4-88e8-a084c281d2ee"
+// }
 
     
-    this.reviews.push(this.review);
+//     this.reviews.push(this.review);
+    const promise = new Promise((resolve, reject) => {
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkNjM4M2I3OC1jZjJiLTQyNGUtYTg1MS0xNzg2Mjg2OTA4OWEiLCJqdGkiOiJiOTdmMjgzNS00ZjBjLTRhOGUtOTUwZC1hMjhjYWRkNDQ5YzQiLCJleHAiOjE1NzY3NjE5NjF9.bODFIkl1bBqKFBl1HdlhDRxelQSL2iS0Q2Izt9b5imSGqcsHLGTGIXHPUJuutmmIQ3YBozmTdyLvEHVv8UVfCw'
+        })
+      }
+      
+      const data = {
+        "postId": null,
+        "reviewerId": "92cf5e3c-91b4-4e15-8531-a3c2dcea2084",
+        "stars": 5,
+        "text": "A Sample text",
+        "userId": "d508db76-3c46-4eb4-88e8-a084c281d2ee" 
+      }
+
+      this.httpClient.post('http://staging-api.allchops.com/api/review', data, httpOptions).subscribe((review: any) => { 
+        this.reviews.unshift(review);
+        this.dismissLoading();
+        console.log(data);
+        resolve(data);
+      });
+    });    
+
+    return promise;
+
   }
 
   // getReviewerName(review: any) {
@@ -123,5 +164,35 @@ export class ContributorReviewsPage implements OnInit {
   //   // } 
   //   return review.reviewer.firstName;
   // }
+
+
+  displayDate(review) {
+    const createdDate = new Date(review.createdDate);
+    const milliseconds = createdDate.getMilliseconds();
+
+    // if (milliseconds >= this.oneDay) {
+      return review.createdDate;
+    // } else {
+    //   const hours = (((this.oneDay - milliseconds) / (1000*60*60)) % 24);
+    //   return hours 
+    // }
+
+   
+  }
+
+  async presentLoading() {
+    this.loading = await this.loadingController.create({
+      message: 'Saving review...'
+    });
+    await this.loading.present();
+
+    const { role, data } = await this.loading.onDidDismiss();
+
+    console.log('Loading dismissed!');
+  }  
+
+  async dismissLoading() {
+    this.loading.dismiss();
+  }
 
 }

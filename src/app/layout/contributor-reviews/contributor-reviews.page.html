@@ -52,7 +52,7 @@
 	<ion-card *ngFor="let review of reviews" class="ion-no-margin">
 	  <ion-item lines="none">
 	    <ion-icon class="ion-margin-end" name="contact" size="large"></ion-icon>
-	    <ion-label>{{ review.reviewer?.firstName }}</ion-label>
+	    <ion-label>{{ review.reviewer?.username }}</ion-label>
 	    <div *ngIf="review.stars === 1">
 	    	<ion-icon name="star" color="primary"></ion-icon>
 	    	<ion-icon name="star-outline"></ion-icon>
@@ -102,7 +102,7 @@
 <ion-grid class="ion-margin-start">
 		  <ion-row> 
 		    <ion-col>
-		      {{ review.createdDate }}
+		      {{ displayDate(review) }}
 		    </ion-col>
 		    <ion-col>
 		      {{ review.likes }} likes
