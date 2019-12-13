@@ -49,11 +49,11 @@
 <ion-content>
 
 	<!-- reviews -->
-	<ion-card class="ion-no-margin">
+	<ion-card *ngFor="let review of reviews" class="ion-no-margin">
 	  <ion-item lines="none">
 	    <ion-icon class="ion-margin-end" name="contact" size="large"></ion-icon>
-	    <ion-label>Kennie B.</ion-label>
-	      <ion-icon name="star" color="primary"></ion-icon>
+	    <ion-label>{{ review.reviewer?.firstName }}</ion-label>
+	   <ion-icon name="star" color="primary"></ion-icon>
        <ion-icon name="star" color="primary"></ion-icon>
        <ion-icon name="star" color="primary"></ion-icon>
        <ion-icon name="star-half" color="primary"></ion-icon>
@@ -61,25 +61,26 @@
 	  </ion-item>
 
 	  <ion-card-content>
-	   Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.
+	  {{ review.text }}
 	   
 	  </ion-card-content>
 <ion-grid class="ion-margin-start">
 		  <ion-row> 
 		    <ion-col>
-		      1/19/19
+		      {{ review.createdDate }}
 		    </ion-col>
 		    <ion-col>
-		      100 likes
+		      {{ review.likes }} likes
 		    </ion-col>
 		    <ion-col>
-		      <ion-icon name="heart-empty"></ion-icon>
+<!-- 		      <ion-icon *ngIf="isHeartByYou(review)" name="heart"></ion-icon>
+		      <ion-icon *ngIf="!isHeartByYou(review)" name="heart-empty"></ion-icon> -->
 		    </ion-col>
 		  </ion-row>
 		</ion-grid>
 		
 	</ion-card> 
-	<ion-card class="ion-no-margin">
+	<!-- <ion-card class="ion-no-margin">
 	  <ion-item lines="none">
 	    <ion-icon class="ion-margin-end" name="contact" size="large"></ion-icon>
 	    <ion-label>Johnny K.</ion-label>
@@ -138,16 +139,19 @@
 		  </ion-row>
 		</ion-grid>
 		
-	</ion-card> 
+	</ion-card>  -->
 
 </ion-content>
 <ion-footer> 
  	   <ion-item>
 	    <ion-icon slot="start"  name="image" size="large"></ion-icon>
-	    <ion-input placeholder="Add a review"></ion-input>
-	    <ion-fab-button slot="end" size="small">
+	    <ion-input placeholder="Add a review" [(ngModel)]="review.text"></ion-input>
+	    <ion-fab-button slot="end" size="small" (click)="addReview()">
 	    	<ion-icon name="add"></ion-icon>
 	    </ion-fab-button>
 	  </ion-item>
-  	 
+<!--   	<ion-button expand="full" class="ion-no-margin">
+  		<ion-icon slot="start" name="add"></ion-icon>
+  		Add review
+  	</ion-button> -->
 </ion-footer>
