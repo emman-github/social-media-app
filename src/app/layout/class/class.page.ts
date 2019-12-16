@@ -4,12 +4,13 @@ import { FilterContributorReviewsComponent } from 'src/app/layout/filter-contrib
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
+
 @Component({
-  selector: 'app-contributor-reviews',
-  templateUrl: './contributor-reviews.page.html',
-  styleUrls: ['./contributor-reviews.page.scss'],
+  selector: 'app-class',
+  templateUrl: './class.page.html',
+  styleUrls: ['./class.page.scss'],
 })
-export class ContributorReviewsPage implements OnInit {
+export class ClassPage implements OnInit {
   reviews: any;
   review: object;
   name: string;
@@ -201,10 +202,4 @@ export class ContributorReviewsPage implements OnInit {
   async dismissLoading() {
     this.loading.dismiss();
   }
-
-  hasNoText() {
-    console.log(this.text === undefined || this.text === null || this.text === '');
-    return this.text === undefined || this.text === null || this.text === '';
-  }
-
 }

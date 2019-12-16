@@ -3,7 +3,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', redirectTo: 'contributor-reviews', pathMatch: 'full' },
-  { path: 'contributor-reviews', loadChildren: './layout/contributor-reviews/contributor-reviews.module#ContributorReviewsPageModule' }
+  { path: 'contributor-reviews', loadChildren: './layout/contributor-reviews/contributor-reviews.module#ContributorReviewsPageModule' },
+  { path: 'class', loadChildren: './layout/class/class.module#ClassPageModule' }
 
 ];
 
