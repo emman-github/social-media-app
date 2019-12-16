@@ -26,6 +26,8 @@ export class ContributorReviewsPage implements OnInit {
   averageStars: any; 
   ratedStar: any;
 
+  displayedStars: any = [];
+
   constructor(
     private modalController: ModalController,
     private httpClient: HttpClient,
@@ -45,6 +47,14 @@ export class ContributorReviewsPage implements OnInit {
     }
 
     this.oneDay = 60 * 60 * 24 * 1000;
+
+    this.displayedStars = [
+      {value: 1, iconName: 'star-outline'},
+      {value: 2, iconName: 'star-outline'},
+      {value: 3, iconName: 'star-outline'},
+      {value: 4, iconName: 'star-outline'},
+      {value: 5, iconName: 'star-outline'}
+    ]
   }
 
   ngOnInit() {
@@ -91,7 +101,7 @@ export class ContributorReviewsPage implements OnInit {
   
       this.httpClient.get('http://staging-api.allchops.com/api/user/d508db76-3c46-4eb4-88e8-a084c281d2ee/reviews', httpOptions).subscribe((data: any) => { 
         console.log(data);
-        this.reviews = data;
+        this.reviews = data.reverse();
         let starsCount = 0;
         let stars = 0;
         this.reviews.forEach(function(review, index) {
@@ -205,6 +215,45 @@ export class ContributorReviewsPage implements OnInit {
   hasNoText() {
     console.log(this.text === undefined || this.text === null || this.text === '');
     return this.text === undefined || this.text === null || this.text === '';
+  }
+
+  getRatedStar(value: number) {
+    // console.log(this.displayedStars[0])
+
+    this.displayedStars.forEach(function(displayedStar, index, arr) {
+      // console.log(index);
+      
+      // console.log(arr[index])
+      if ((index + 1) <= value) {
+        arr[index].iconName = 'star';
+        // console.log(this.displayedStars);
+      } else {
+        arr[index].iconName = 'star-outline';
+      }
+    });
+   
+  }
+
+  hasNoRatedStar(): boolean {
+
+    for (var i = 0; i < 5; i++) { 
+      if (this.displayedStars[i].iconName === 'star') {
+
+        return false; 
+      
+      }
+    }
+ 
+    return true;
+
+    // this.displayedStars.forEach(function(displayedStar, index, arr) {
+    //   if (displayedStar.iconName === 'star') {
+    //     console.log(1);
+    //     return false;
+    //   }
+    // });
+    // console.log(2);
+    // return true;
   }
 
 }

@@ -177,31 +177,41 @@
 	</ion-card>  -->
 
 </ion-content>
-<ion-footer> 
-	<div >
-		<ion-item slot="start">
- 			<ion-button class="ion-no-margin" fill="clear" ([ngModel])="getRatedStar(1)">
- 				<ion-icon slot="icon-only" name="star"></ion-icon>
+<ion-footer>  
+<!-- 		<ion-item slot="start">
+ 			<ion-button fill="clear" (click)="getRatedStar(1)">
+ 				<ion-icon slot="icon-only" name="star-outline"></ion-icon>
  			</ion-button>
- 			<ion-button fill="clear">
- 				<ion-icon slot="icon-only" name="star-outline" ([ngModel])="getRatedStar(2)"></ion-icon>
+ 			<ion-button fill="clear" (click)="getRatedStar(2)">
+ 				<ion-icon slot="icon-only" name="star-outline" ></ion-icon>
  			</ion-button>
- 			<ion-button fill="clear">
- 				<ion-icon slot="icon-only" name="star-outline" ([ngModel])="getRatedStar(3)"></ion-icon>
+ 			<ion-button fill="clear" (click)="getRatedStar(3)">
+ 				<ion-icon slot="icon-only" name="star-outline"></ion-icon>
  			</ion-button>
- 			<ion-button fill="clear">
- 				<ion-icon slot="icon-only" name="star-outline" ([ngModel])="getRatedStar(4)"></ion-icon>
+ 			<ion-button fill="clear" (click)="getRatedStar(4)">
+ 				<ion-icon slot="icon-only" name="star-outline"></ion-icon>
  			</ion-button>
- 			<ion-button fill="clear">
- 				<ion-icon slot="icon-only" name="star-outline" ([ngModel])="getRatedStar(5)"></ion-icon>
+ 			<ion-button fill="clear" (click)="getRatedStar(5)">
+ 				<ion-icon slot="icon-only" name="star-outline"></ion-icon>
  			</ion-button>
-	 	</ion-item>
-	</div>
+	 	</ion-item> -->
+	 	<ion-grid class="ion-no-margin ion-no-padding">
+	 		<ion-row class="ion-text-center" class="ion-no-margin ion-no-padding">
+	 			<ion-col class="ion-text-center" class="ion-no-margin ion-no-padding">
+	 				<div class="ion-text-center">
+		 				<ion-button *ngFor="let displayedStar of displayedStars; let i = index" fill="clear" (click)="getRatedStar(i + 1)">
+			 				<ion-icon slot="icon-only" [name]="displayedStar.iconName"></ion-icon>
+			 			</ion-button> 
+		 			</div>
+	 			</ion-col>
+	 		
+ 		</ion-row>
+	 	</ion-grid>  
 		
  	   <ion-item>
 	    <ion-icon slot="start"  name="image" size="large"></ion-icon>
 	    <ion-input placeholder="Add a review" [(ngModel)]="text"></ion-input>
-	    <ion-fab-button slot="end" size="small" (click)="addReview()" [disabled]="hasNoText()">
+	    <ion-fab-button slot="end" size="small" (click)="addReview()" [disabled]="hasNoText() && hasNoRatedStar()">
 	    	<ion-icon name="add"></ion-icon>
 	    </ion-fab-button>
 	  </ion-item>
