@@ -155,16 +155,24 @@ export class ContributorReviewsPage implements OnInit {
       const data = {
         "postId": null,
         "reviewerId": "92cf5e3c-91b4-4e15-8531-a3c2dcea2084",
-        "stars": 5,
+        "stars": this.star,
         "text": this.text,
         "userId": "d508db76-3c46-4eb4-88e8-a084c281d2ee" 
       }
 
       this.httpClient.post('http://staging-api.allchops.com/api/review', data, httpOptions).subscribe((review: any) => { 
         this.text = '';
+        this.star = 0;
+        this.displayedStars = [
+          {value: 1, iconName: 'star-outline'},
+          {value: 2, iconName: 'star-outline'},
+          {value: 3, iconName: 'star-outline'},
+          {value: 4, iconName: 'star-outline'},
+          {value: 5, iconName: 'star-outline'}
+        ]
         this.reviews.unshift(review);
         // this.dismissLoading();
-        console.log(data);
+        console.log(review);
         resolve(data);
       });
     });    
@@ -212,48 +220,42 @@ export class ContributorReviewsPage implements OnInit {
     this.loading.dismiss();
   }
 
-  hasNoText() {
-    console.log(this.text === undefined || this.text === null || this.text === '');
+  hasNoText() { 
     return this.text === undefined || this.text === null || this.text === '';
   }
 
   getRatedStar(value: number) {
     // console.log(this.displayedStars[0])
-
+    let star: number = 0;
     this.displayedStars.forEach(function(displayedStar, index, arr) {
       // console.log(index);
       
       // console.log(arr[index])
       if ((index + 1) <= value) {
         arr[index].iconName = 'star';
+        star = star + 1;
         // console.log(this.displayedStars);
       } else {
         arr[index].iconName = 'star-outline';
       }
     });
+
+    this.star = star;
+    console.log(this.star)
    
   }
 
   hasNoRatedStar(): boolean {
 
     for (var i = 0; i < 5; i++) { 
-      if (this.displayedStars[i].iconName === 'star') {
+      let hasStar = this.displayedStars[i].iconName === 'star';
 
+      if (hasStar) {
         return false; 
-      
       }
     }
  
-    return true;
-
-    // this.displayedStars.forEach(function(displayedStar, index, arr) {
-    //   if (displayedStar.iconName === 'star') {
-    //     console.log(1);
-    //     return false;
-    //   }
-    // });
-    // console.log(2);
-    // return true;
+    return true; 
   }
 
 }
